@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Contributions - Ignite Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="bg-orange-50 p-6 min-h-screen">
+
+  <div class="max-w-6xl mx-auto bg-white p-8 rounded-xl shadow-lg" id="reportSection">
+    <!-- Header Section -->
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
+      <h2 class="text-2xl font-bold text-orange-600">All Member Contributions</h2>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input type="text" id="searchInput" placeholder="Search name or phone" class="border px-3 py-2 rounded text-sm" />
+        <select id="monthFilter" class="border rounded px-3 py-2 text-sm">
+          <option value="all">All Months</option>
+          <option value="2025-08">August 2025</option>
+          <option value="2025-07">July 2025</option>
+          <option value="2025-06">June 2025</option>
+        </select>
+        <button onclick="exportToPDF()" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 text-sm">Export PDF</button>
+        <button onclick="logout()" class="bg-orange-100 text-orange-700 px-4 py-2 rounded hover:bg-orange-200 text-sm">Logout</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm text-left" id="contributionTable">
+        <thead class="bg-gray-200 text-gray-700">
+          <tr>
+            <th class="p-3">#</th>
+            <th class="p-3">Member</th>
+            <th class="p-3">Phone</th>
+            <th class="p-3">Month</th>
+            <th class="p-3">Amount (Ksh)</th>
+            <th class="p-3">Date Paid</th>
+            <th class="p-3">Status</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-800" id="tableBody">
+          <!-- Rows via JS -->
+        </tbody>
+        <!-- Chart Section -->
+<div class="mt-12">
+  <h3 class="text-xl font-bold text-orange-600 mb-4">Monthly Contributions Summary</h3>
+  <canvas id="monthlyChart" height="100"></canvas>
+</div>
+      </table>
+    </div>
+
+    <!-- Total -->
+    <div class="mt-6 text-right">
+      <p class="text-lg font-semibold text-gray-800">Total Contributions: <span id="totalAmount" class="text-green-600">Ksh 0</span></p>
+    </div>
+  </div>
+
+  <script>
+    const allContributions = [
+      { name: "Brian Odhiambo", phone: "0712345678", month: "2025-08", amount: 1000, date: "2025-08-01", status: "Paid" },
+      { name: "Ann Wanjiku", phone: "0711223344", month: "2025-08", amount: 1000, date: "2025-08-02", status: "Paid" },
+      { name: "Peter Kamau", phone: "0709876543", month: "2025-07", amount: 1000, date: "2025-07-10", status: "Paid" },
+      { name: "Grace Atieno", phone: "0799887766", month: "2025-06", amount: 1000, date: "2025-06-20", status: "Paid" },
+      { name: "John Mwangi", phone: "0700112233", month: "2025-08", amount: 0, date: "-", status: "Pending" }
+    ];
+
+    function renderTable() {
+      const month = document.getElementById("monthFilter").value;
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const body = document.getElementById("tableBody");
+      body.innerHTML = "";
+      let total = 0;
+      let index = 0;
+
+      allContributions.forEach((c, i) => {
+        const matchMonth = month === "all" || c.month === month;
+        const matchSearch = c.name.toLowerCase().includes(search) || c.phone.includes(search);
+
+        if (matchMonth && matchSearch) {
+          index++;
+          const row = `
+            <tr class="border-b hover:bg-gray-50">
+              <td class="p-3">${index}</td>
+              <td class="p-3">${c.name}</td>
+              <td class="p-3">${c.phone}</td>
+              <td class="p-3">${monthName(c.month)}</td>
+              <td class="p-3">Ksh ${c.amount}</td>
+              <td class="p-3">${c.date}</td>
+              <td class="p-3">
+                <span class="px-2 py-1 rounded-full text-white ${c.status === 'Paid' ? 'bg-green-500' : 'bg-red-500'}">
+                  ${c.status}
+                </span>
+              </td>
+            </tr>
+          `;
+          body.innerHTML += row;
+          total += c.amount;
+        }
+      });
+
+      document.getElementById("totalAmount").textContent = `Ksh ${total}`;
+    }
+
+    function monthName(monthValue) {
+      const options = { year: 'numeric', month: 'long' };
+      if (monthValue === "-") return "-";
+      return new Date(`${monthValue}-01`).toLocaleDateString('en-KE', options);
+    }
+
+    function exportToPDF() {
+      const element = document.getElementById("reportSection");
+      html2pdf().from(element).save("ignite_contributions.pdf");
+    }
+
+    function logout() {
+      window.location.href = "login.html";
+    }
+
+    // Event listeners
+    document.getElementById("monthFilter").addEventListener("change", renderTable);
+    document.getElementById("searchInput").addEventListener("input", renderTable);
+
+    renderTable(); // Initial render
+  const chartData = {};
+
+  allContributions.forEach((c) => {
+    if (!chartData[c.month]) {
+      chartData[c.month] = 0;
+    }
+    chartData[c.month] += c.amount;
+  });
+
+  const months = Object.keys(chartData).sort();
+  const totals = months.map((m) => chartData[m]);
+
+  const ctx = document.getElementById("monthlyChart").getContext("2d");
+  const monthlyChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: months.map(m => monthName(m)),
+      datasets: [{
+        label: "Total Contributions (Ksh)",
+        data: totals,
+        backgroundColor: "rgba(255, 99, 132, 0.7)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 1,
+        borderRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: value => `Ksh ${value}`
+          }
+        }
+      }
+    }
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard - Ignite SACCO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-emerald-700 text-white px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Ignite SACCO</h1>
+    <button class="bg-white text-emerald-700 px-4 py-2 rounded hover:bg-gray-200" onclick="logout()">Logout</button>
+  </nav>
+
+  <!-- Dashboard Container -->
+  <div class="max-w-6xl mx-auto p-6 space-y-6">
+
+    <!-- Greeting -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800">Welcome, <span id="userName">Member</span></h2>
+      <p class="text-gray-600">Here's your savings and loan summary.</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-4 shadow rounded-lg">
+        <h3 class="text-gray-600 text-sm">Total Savings</h3>
+        <p id="totalSavings" class="text-2xl font-semibold text-emerald-700">KES 0.00</p>
+      </div>
+
+      <div class="bg-white p-4 shadow rounded-lg">
+        <h3 class="text-gray-600 text-sm">Last Payment Status</h3>
+        <p id="paymentStatus" class="text-lg font-medium text-yellow-600">Pending</p>
+      </div>
+
+      <div class="bg-white p-4 shadow rounded-lg">
+        <h3 class="text-gray-600 text-sm">Outstanding Loan</h3>
+        <p id="loanAmount" class="text-lg font-medium text-red-600">KES 0.00</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Pay Savings -->
+      <div class="bg-white p-6 shadow rounded-lg">
+  <h3 class="text-lg font-bold mb-3 text-gray-700">Pay Monthly Savings</h3>
+
+  <input
+    type="tel"
+    id="mpesaNumber"
+    placeholder="Enter M-Pesa phone number"
+    class="w-full border p-2 rounded mb-3"
+    pattern="[0-9]{10}"
+    required
+  />
+
+  <input
+    type="number"
+    id="savingsAmount"
+    placeholder="Enter amount (Min KES 500)"
+    class="w-full border p-2 rounded mb-3"
+  />
+
+  <button
+    onclick="paySavings()"
+    class="bg-emerald-600 w-full text-white py-2 rounded hover:bg-emerald-700 mb-3"
+  >
+    Pay via M-Pesa STK Push
+  </button>
+
+  <!-- Payment Button -->
+  <a
+    href="payment-history.html"
+    class="block text-center bg-gray-200 text-gray-800 py-2 rounded hover:bg-gray-300 transition"
+  >
+    View Payment History
+  </a>
+  <!-- View Profile Button -->
+  <a
+    href="profile.html"
+    class="block text-center bg-gray-200 text-gray-800 py-2 rounded hover:bg-gray-300 transition"
+  >
+    View Profile
+  </a>
+</div>
+
+  <!-- Loan Management -->
+<div class="bg-white p-6 shadow rounded-lg space-y-3">
+  <!-- Eligibility Button (Top) -->
+  <div class="flex justify-end">
+    <button
+      onclick="showEligibility()"
+      class="bg-indigo-600 text-white text-sm px-3 py-1 rounded hover:bg-indigo-700"
+    >
+      Loan Eligibility Criteria
+    </button>
+  </div>
+
+  <h3 class="text-lg font-bold text-gray-700">Loan Management</h3>
+
+  <a href="request-loan.html" class="w-full block bg-blue-600 text-white py-2 rounded text-center hover:bg-blue-700">
+    Request Loan
+  </a>
+
+  <a href="pay-loan.html" class="w-full block bg-yellow-500 text-white py-2 rounded text-center hover:bg-yellow-600">
+    Pay Loan
+  </a>
+
+  <!-- Eligibility Modal (hidden by default) -->
+  <div id="eligibilityModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+    <div class="bg-white max-w-md w-full rounded-lg p-6 shadow-lg">
+      <div class="flex justify-between items-start">
+        <h4 class="text-lg font-semibold text-gray-800">Loan Eligibility Criteria</h4>
+        <button onclick="closeEligibility()" class="text-gray-500 hover:text-gray-700">&times;</button>
+      </div>
+
+      <ul class="mt-4 list-disc list-inside text-sm text-gray-700 space-y-2">
+        <li>Must have saved for at least <strong>1 month</strong> with Ignite SACCO.</li>
+        <li>Minimum total savings: <strong>KES 1,000</strong>.</li>
+        <li>Last month's contribution must be <strong>Paid</strong>.</li>
+        <li>Maximum loan amount: <strong>KES 500</strong> (or as set by admin).</li>
+        <li>Interest: <strong>4% per week</strong>, calculated on the original borrowed amount.</li>
+        <li>Loan approval subject to admin review and available funds.</li>
+      </ul>
+
+      <div class="mt-6 flex justify-end">
+        <button onclick="closeEligibility()" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showEligibility() {
+      document.getElementById('eligibilityModal').classList.remove('hidden');
+    }
+    function closeEligibility() {
+      document.getElementById('eligibilityModal').classList.add('hidden');
+    }
+  </script>
+</div>
+
+    <!-- Send Request to Admin -->
+    <div class="bg-white p-6 shadow rounded-lg">
+      <h3 class="text-lg font-bold text-gray-700 mb-2">Send a Request to Admin</h3>
+      <textarea id="userMessage" rows="4"
+        class="w-full border p-2 rounded mb-3"
+        placeholder="Write your message..."></textarea>
+      <button onclick="submitRequest()" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-black">
+        Submit Request
+      </button>
+    </div>
+
+  </div>
+
+  <!-- JS Logic -->
+  <script>
+    // Simulated data (replace with actual API data later)
+    const user = {
+      name: "Brian Odhiambo",
+      totalSavings: 1500,
+      paymentStatus: "Paid",
+      loan: 500
+    };
+
+    document.getElementById("userName").innerText = user.name;
+    document.getElementById("totalSavings").innerText = `KES ${user.totalSavings}`;
+    document.getElementById("paymentStatus").innerText = user.paymentStatus;
+    document.getElementById("loanAmount").innerText = `KES ${user.loan}`;
+
+    function paySavings() {
+      const phone = document.getElementById("mpesaNumber").value.trim();
+      const amount = parseFloat(document.getElementById("savingsAmount").value);
+
+      if (!/^07\d{8}$/.test(phone)) {
+        alert("Please enter a valid Safaricom number (e.g., 07XXXXXXXX)");
+        return;
+      }
+
+      if (isNaN(amount) || amount < 500) {
+        alert("Minimum amount to save is KES 500.");
+        return;
+      }
+
+      alert(`Initiating M-Pesa STK push to ${phone} for KES ${amount}...`);
+
+      // TODO: Replace with actual backend call to trigger STK push
+      /*
+      fetch("/api/mpesa/stkpush", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, amount })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert("Payment initiated successfully.");
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Failed to initiate payment.");
+      });
+      */
+    }
+
+    function requestLoan() {
+      if (user.totalSavings < 1000 || user.paymentStatus !== "Paid") {
+        alert("You must have saved at least KES 1000 and paid this month's savings to request a loan.");
+      } else {
+        alert("Loan request submitted successfully.");
+        // TODO: Send request to backend
+      }
+    }
+
+    function payLoan() {
+      if (user.loan <= 0) {
+        alert("You have no outstanding loans.");
+      } else {
+        alert(`Paying back KES ${user.loan} loan via M-Pesa...`);
+        // TODO: Trigger loan payment logic
+      }
+    }
+
+    function submitRequest() {
+      const message = document.getElementById("userMessage").value.trim();
+      if (!message) {
+        alert("Please write a message.");
+        return;
+      }
+      alert("Your request has been sent to the admin.");
+      document.getElementById("userMessage").value = "";
+      // TODO: Send to backend / message endpoint
+    }
+
+    function logout() {
+      window.location.href = "/login.html";
+    }
+  </script>
+</body>
+</html>

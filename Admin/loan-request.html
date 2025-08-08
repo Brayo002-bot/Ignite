@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Loan Requests - Ignite SACCO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-orange-50 min-h-screen p-6">
+  <div class="max-w-5xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold text-orange-700 mb-4">📩 Loan Requests</h2>
+    <table class="w-full table-auto border">
+      <thead class="bg-orange-100">
+        <tr>
+          <th class="px-4 py-2 text-left">Name</th>
+          <th class="px-4 py-2 text-left">Phone</th>
+          <th class="px-4 py-2 text-left">Amount</th>
+          <th class="px-4 py-2 text-left">Date Requested</th>
+          <th class="px-4 py-2 text-left">Status</th>
+          <th class="px-4 py-2 text-left">Action</th>
+        </tr>
+      </thead>
+      <tbody id="loanRequestsBody">
+        <tr class="border-t" id="requestRow1">
+          <td class="px-4 py-2">Brian Otieno</td>
+          <td class="px-4 py-2">0712345678</td>
+          <td class="px-4 py-2">KES 500</td>
+          <td class="px-4 py-2">2025-07-28</td>
+          <td class="px-4 py-2" id="status1">Pending</td>
+          <td class="px-4 py-2 space-x-2">
+            <button onclick="approveLoan('status1', '2025-07-28')" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Approve</button>
+            <button onclick="declineLoan('status1', '2025-07-28')" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Decline</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Loan History Section -->
+  <div class="max-w-5xl mx-auto bg-white mt-8 p-6 rounded shadow">
+    <h2 class="text-xl font-bold text-orange-700 mb-4">📜 Loan Requests History</h2>
+    <table class="w-full table-auto border text-sm" id="loanHistoryTable">
+      <thead class="bg-orange-100">
+        <tr>
+          <th class="px-3 py-2 text-left">Name</th>
+          <th class="px-3 py-2 text-left">Phone</th>
+          <th class="px-3 py-2 text-left">Amount</th>
+          <th class="px-3 py-2 text-left">Date Requested</th>
+          <th class="px-3 py-2 text-left">Date Approved/Declined</th>
+          <th class="px-3 py-2 text-left">Status</th>
+        </tr>
+      </thead>
+      <tbody id="loanHistoryBody">
+        <!-- Entries will be dynamically inserted here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function approveLoan(statusId, dateRequested) {
+      const statusCell = document.getElementById(statusId);
+      statusCell.textContent = "Approved";
+      statusCell.classList.remove("text-red-600", "text-yellow-600");
+      statusCell.classList.add("text-green-600", "font-semibold");
+
+      addToLoanHistory("Brian Otieno", "0712345678", "KES 500", dateRequested, getTodayDate(), "Approved");
+    }
+
+    function declineLoan(statusId, dateRequested) {
+      const reason = prompt("Please enter reason for declining this loan request:");
+      if (reason) {
+        const statusCell = document.getElementById(statusId);
+        statusCell.textContent = `Declined (${reason})`;
+        statusCell.classList.remove("text-green-600", "text-yellow-600");
+        statusCell.classList.add("text-red-600", "font-semibold");
+
+        addToLoanHistory("Brian Otieno", "0712345678", "KES 500", dateRequested, getTodayDate(), `Declined (${reason})`);
+      }
+    }
+
+    function getTodayDate() {
+      const today = new Date();
+      return today.toISOString().split("T")[0];
+    }
+
+    function addToLoanHistory(name, phone, amount, requestedDate, decisionDate, status) {
+      const table = document.getElementById("loanHistoryBody");
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td class="px-3 py-2">${name}</td>
+        <td class="px-3 py-2">${phone}</td>
+        <td class="px-3 py-2">${amount}</td>
+        <td class="px-3 py-2">${requestedDate}</td>
+        <td class="px-3 py-2">${decisionDate}</td>
+        <td class="px-3 py-2">${status}</td>
+      `;
+      table.appendChild(row);
+    }
+  </script>
+</body>
+</html>

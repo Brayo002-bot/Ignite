@@ -1,0 +1,77 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ignite SACCO - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+
+  <!-- About Button -->
+  <button onclick="document.getElementById('aboutModal').classList.remove('hidden')"
+    class="absolute top-5 left-5 bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700">
+    About Ignite SACCO
+  </button>
+
+  <!-- Login Form -->
+  <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center text-emerald-700">Login to Ignite SACCO</h2>
+
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Phone Number or Email</label>
+        <input type="text" id="username" required
+          class="w-full mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-emerald-400" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" id="password" required
+          class="w-full mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-emerald-400" />
+      </div>
+
+      <button type="submit"
+        class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700 transition">
+        Login
+      </button>
+    </form>
+  </div>
+
+  <!-- About Modal -->
+  <div id="aboutModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded-lg max-w-xl shadow-lg relative">
+      <button onclick="document.getElementById('aboutModal').classList.add('hidden')"
+        class="absolute top-2 right-2 text-gray-500 hover:text-black">&times;</button>
+
+      <h3 class="text-xl font-semibold text-emerald-700 mb-4">About Ignite SACCO</h3>
+      <p class="text-gray-700 text-sm leading-relaxed">
+        Ignite SACCO is a community-driven savings group where each member contributes a minimum of
+        <strong>KES 500 per month</strong>. Contributions can exceed this amount, but you must meet the minimum to proceed monthly.
+        Loans of up to <strong>KES 500</strong> are available to members who have saved at least <strong>KES 1,000</strong> and have cleared their last month's savings.
+        Loans incur a <strong>4% weekly interest</strong>. Only M-Pesa is supported for payments. Members are added by the admin, and no self-registration is allowed.
+        No refunds are processed before the admin-set date. Reminders will be sent via WhatsApp for due dates.
+      </p>
+    </div>
+  </div>
+
+  <!-- Login Redirect Script -->
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // TODO: Replace with real backend login
+      if (username === 'admin@example.com') {
+        window.location.href = '/Admin/dashboard.html';
+      } else {
+        window.location.href = '/user/dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>

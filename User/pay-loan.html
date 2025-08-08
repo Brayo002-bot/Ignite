@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pay Loan - Ignite SACCO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-emerald-700 text-white px-6 py-4 flex justify-between">
+    <h1 class="text-xl font-bold">Pay Loan</h1>
+    <button onclick="logout()" class="bg-white text-emerald-700 px-4 py-2 rounded hover:bg-gray-200">Logout</button>
+  </nav>
+
+  <!-- Loan Info Section -->
+  <div class="max-w-xl mx-auto bg-white mt-10 p-6 rounded shadow space-y-4">
+    <h2 class="text-lg font-bold text-gray-800">Outstanding Loan Details</h2>
+
+    <p><strong>Loan Taken On:</strong> <span id="loanDate"></span></p>
+    <p><strong>Loan Sent To:</strong> <span id="phoneUsed"></span></p>
+    <p><strong>Weeks Passed:</strong> <span id="weeksDue"></span></p>
+    <p><strong>Original Amount:</strong> KES <span id="originalAmount"></span></p>
+    <p><strong>Interest Accumulated (4%/week):</strong> KES <span id="interest"></span></p>
+    <p><strong>Total Due:</strong> KES <span id="totalDue"></span></p>
+    <p><strong>Status:</strong> <span id="loanStatus" class="font-semibold text-red-600"></span></p>
+
+    <hr />
+
+    <!-- M-Pesa STK Push Form -->
+    <h3 class="font-semibold text-gray-800 mt-4">Pay Loan via M-Pesa</h3>
+    
+    <input type="tel" id="payPhone" placeholder="Enter M-Pesa Phone Number" class="w-full p-2 border rounded mb-3" pattern="[0-9]{10}" required />
+
+    <input type="number" id="loanAmount" placeholder="Enter amount to pay" class="w-full p-2 border rounded mb-3" />
+
+    <button onclick="payLoan()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">
+      Pay via M-Pesa STK Push
+    </button>
+  </div>
+
+  <script>
+    // Sample loan data
+    const originalAmount = 500;
+    const phoneUsed = "0712345678";
+    const loanDateStr = "2025-07-10"; // Format: YYYY-MM-DD
+    const loanPaid = false;
+
+    // Calculate values
+    const loanDate = new Date(loanDateStr);
+    const today = new Date();
+    const weeksPassed = Math.floor((today - loanDate) / (7 * 24 * 60 * 60 * 1000));
+    const interest = Math.floor(originalAmount * 0.04 * weeksPassed);
+    const totalDue = originalAmount + interest;
+
+    // Populate values in DOM
+    document.getElementById("loanDate").innerText = loanDate.toDateString();
+    document.getElementById("phoneUsed").innerText = phoneUsed;
+    document.getElementById("weeksDue").innerText = weeksPassed;
+    document.getElementById("originalAmount").innerText = originalAmount;
+    document.getElementById("interest").innerText = interest;
+    document.getElementById("totalDue").innerText = totalDue;
+    document.getElementById("loanStatus").innerText = loanPaid ? "Paid" : "Not Paid";
+
+    function payLoan() {
+      const payAmount = Number(document.getElementById("loanAmount").value);
+      const payPhone = document.getElementById("payPhone").value;
+
+      if (!payPhone.match(/^[0-9]{10}$/)) {
+        alert("Enter a valid 10-digit M-Pesa number.");
+        return;
+      }
+
+      if (!payAmount || payAmount <= 0) {
+        alert("Enter a valid payment amount.");
+        return;
+      }
+
+      alert(`STK Push initiated to ${payPhone} for KES ${payAmount}.`);
+      // Simulate payment logic (store to DB or update backend)
+    }
+
+    function logout() {
+      window.location.href = "/login.html";
+    }
+  </script>
+
+</body>
+</html>

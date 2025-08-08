@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Loan - Ignite SACCO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <nav class="bg-emerald-700 text-white px-6 py-4 flex justify-between">
+    <h1 class="text-xl font-bold">Request Loan</h1>
+    <button onclick="logout()" class="bg-white text-emerald-700 px-4 py-2 rounded hover:bg-gray-200">Logout</button>
+  </nav>
+
+  <div class="max-w-lg mx-auto bg-white mt-10 p-6 rounded shadow">
+    <h2 class="text-lg font-bold text-gray-800 mb-3">Loan Eligibility Check</h2>
+
+    <p class="mb-4 text-gray-700">
+      ✔️ You have saved: <strong>KES 1200</strong><br />
+      ✔️ Last month payment: <strong>Paid</strong><br />
+      ✅ You are eligible to request a loan of up to <strong>KES 500</strong>.
+    </p>
+
+    <input type="number" id="loanRequestAmount" max="500" placeholder="Enter loan amount (max 500)"
+      class="w-full p-2 border rounded mb-3" />
+
+    <button onclick="requestLoan()" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+      Submit Loan Request
+    </button>
+  </div>
+
+  <!-- Loan Status Display -->
+  <div class="max-w-lg mx-auto bg-white mt-6 p-6 rounded shadow">
+    <h2 class="text-lg font-bold text-gray-800 mb-4">Your Loan Request Status</h2>
+
+    <div id="loanStatusContainer" class="bg-gray-50 p-4 border rounded">
+      <!-- This will be dynamically updated -->
+      <p><strong>Status:</strong> <span id="loanStatus" class="text-yellow-600">Pending</span></p>
+      <p id="declineReason" class="text-sm text-red-600 mt-2 hidden"><strong>Reason:</strong> <span id="reasonText"></span></p>
+    </div>
+  </div>
+
+  <script>
+    // Simulated status data (this should come from backend/database)
+    let loanStatus = "Pending"; // "Approved", "Declined"
+    let declineReason = ""; // Set when declined
+
+    function updateLoanStatusUI() {
+      const statusElement = document.getElementById("loanStatus");
+      const reasonSection = document.getElementById("declineReason");
+      const reasonText = document.getElementById("reasonText");
+
+      if (loanStatus === "Approved") {
+        statusElement.textContent = "Approved";
+        statusElement.className = "text-green-600 font-semibold";
+        reasonSection.classList.add("hidden");
+      } else if (loanStatus === "Declined") {
+        statusElement.textContent = "Declined";
+        statusElement.className = "text-red-600 font-semibold";
+        reasonText.textContent = declineReason;
+        reasonSection.classList.remove("hidden");
+      } else {
+        statusElement.textContent = "Pending";
+        statusElement.className = "text-yellow-600 font-semibold";
+        reasonSection.classList.add("hidden");
+      }
+    }
+
+    function requestLoan() {
+      const amount = document.getElementById("loanRequestAmount").value;
+      if (!amount || amount > 500) {
+        alert("Loan amount must be 500 or less.");
+        return;
+      }
+
+      loanStatus = "Pending";
+      declineReason = "";
+      updateLoanStatusUI();
+
+      alert(`Loan request for KES ${amount} submitted. Status: Pending`);
+    }
+
+    function logout() {
+      window.location.href = "/login.html";
+    }
+
+    // Initialize status on load
+    window.onload = updateLoanStatusUI;
+  </script>
+</body>
+</html>

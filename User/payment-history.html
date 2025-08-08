@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment History - Ignite SACCO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-emerald-700 text-white px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Ignite SACCO</h1>
+    <a href="dashboard.html" class="bg-white text-emerald-700 px-4 py-2 rounded hover:bg-gray-200">Back to Dashboard</a>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="max-w-5xl mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Payment History</h2>
+
+    <div class="overflow-x-auto bg-white p-4 shadow rounded-lg">
+      <table class="min-w-full text-sm text-left text-gray-700">
+        <thead class="bg-gray-200 text-gray-600 uppercase text-xs">
+          <tr>
+            <th class="px-4 py-2">Date</th>
+            <th class="px-4 py-2">Amount (KES)</th>
+            <th class="px-4 py-2">Status</th>
+            <th class="px-4 py-2">Receipt</th>
+          </tr>
+        </thead>
+        <tbody id="paymentTableBody">
+          <!-- Sample row -->
+          <tr class="border-t">
+            <td class="px-4 py-2">2025-07-31</td>
+            <td class="px-4 py-2">500</td>
+            <td class="px-4 py-2 text-green-600 font-medium">Successful</td>
+            <td class="px-4 py-2">MPESA123XYZ</td>
+          </tr>
+          <!-- Dynamic rows can be appended here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>

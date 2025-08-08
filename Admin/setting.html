@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Settings - Ignite SACCO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-emerald-700 text-white px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Ignite SACCO - Admin Settings</h1>
+    <button class="bg-white text-emerald-700 px-4 py-2 rounded hover:bg-gray-200" onclick="logout()">Logout</button>
+  </nav>
+
+  <div class="max-w-3xl mx-auto p-6 space-y-8">
+
+    <!-- Current Settings Display -->
+    <div class="bg-white p-6 shadow rounded-lg">
+      <h2 class="text-xl font-bold mb-4 text-gray-700">Current System Settings</h2>
+      <ul class="text-gray-800 space-y-2">
+        <li><strong>Savings Due Date:</strong> <span id="currentSavingsDate">Not Set</span></li>
+        <li><strong>Refund Restriction Until:</strong> <span id="currentRefundDate">Not Set</span></li>
+        <li><strong>Loan Repayment Reminder Day:</strong> <span id="currentLoanReminder">Not Set</span></li>
+      </ul>
+    </div>
+
+    <!-- Update Settings Form -->
+    <div class="bg-white p-6 shadow rounded-lg space-y-6">
+      <h2 class="text-xl font-bold text-gray-700">Update System Settings</h2>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Monthly Savings Due Date</label>
+        <input type="date" id="savingsDueDate" class="w-full mt-1 p-2 border rounded" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Refund Restriction Until</label>
+        <input type="date" id="refundDate" class="w-full mt-1 p-2 border rounded" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Loan Repayment Reminder Day</label>
+        <select id="loanReminderDay" class="w-full mt-1 p-2 border rounded">
+          <option value="">Select Day</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+        </select>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <input type="checkbox" id="whatsappReminders" class="w-4 h-4" />
+        <label for="whatsappReminders" class="text-sm text-gray-700">Enable WhatsApp Reminders</label>
+      </div>
+
+      <button onclick="updateSettings()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">
+        Save Settings
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Simulated current settings (to be replaced with API fetch)
+    document.getElementById("currentSavingsDate").innerText = "2025-08-10";
+    document.getElementById("currentRefundDate").innerText = "2025-08-20";
+    document.getElementById("currentLoanReminder").innerText = "Monday";
+
+    function updateSettings() {
+      const savingsDate = document.getElementById("savingsDueDate").value;
+      const refundDate = document.getElementById("refundDate").value;
+      const loanDay = document.getElementById("loanReminderDay").value;
+      const whatsappEnabled = document.getElementById("whatsappReminders").checked;
+
+      if (!savingsDate || !refundDate || !loanDay) {
+        alert("Please fill in all the required fields.");
+        return;
+      }
+
+      // In a real app, you'd POST this data to the backend API
+      alert(`Settings saved:
+- Savings Due Date: ${savingsDate}
+- Refund Until: ${refundDate}
+- Loan Reminder Day: ${loanDay}
+- WhatsApp Reminders: ${whatsappEnabled ? 'Enabled' : 'Disabled'}`);
+    }
+
+    function logout() {
+      window.location.href = "/login.html";
+    }
+  </script>
+</body>
+</html>

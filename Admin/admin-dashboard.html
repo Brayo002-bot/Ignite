@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Ignite SACCO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-orange-50 min-h-screen flex items-center justify-center p-6">
+  <div class="max-w-4xl w-full bg-white rounded-xl shadow-lg p-8">
+    
+    <h1 class="text-3xl font-bold text-orange-600 mb-6 text-center">
+      🔥 Ignite SACCO - Admin Dashboard
+    </h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      
+      <!-- Add Member -->
+      <a href="add-member.html" class="flex items-center justify-between p-6 bg-orange-100 rounded-lg shadow hover:shadow-lg hover:bg-orange-200 transition">
+        <div>
+          <h2 class="text-xl font-semibold text-orange-700">➕ Add Member</h2>
+          <p class="text-sm text-orange-800 mt-1">Register a new SACCO member.</p>
+        </div>
+        <span class="text-3xl">👤</span>
+      </a>
+
+      <!-- Payment History -->
+      <a href="payments.html" class="flex items-center justify-between p-6 bg-orange-100 rounded-lg shadow hover:shadow-lg hover:bg-orange-200 transition">
+        <div>
+          <h2 class="text-xl font-semibold text-orange-700">💰 Payment History</h2>
+          <p class="text-sm text-orange-800 mt-1">View and filter contribution records.</p>
+        </div>
+        <span class="text-3xl">📊</span>
+      </a>
+
+      <!-- Loan Requests -->
+      <a href="loan-request.html" class="flex items-center justify-between p-6 bg-orange-100 rounded-lg shadow hover:shadow-lg hover:bg-orange-200 transition">
+        <div>
+          <h2 class="text-xl font-semibold text-orange-700">📥 Loan Requests</h2>
+          <p class="text-sm text-orange-800 mt-1">View loan requests from users.</p>
+        </div>
+        <span class="text-3xl">📝</span>
+      </a>
+
+      <!-- Loan Payment History -->
+      <a href="loan-payments.html" class="flex items-center justify-between p-6 bg-orange-100 rounded-lg shadow hover:shadow-lg hover:bg-orange-200 transition">
+        <div>
+          <h2 class="text-xl font-semibold text-orange-700">📄 Loan Payment History</h2>
+          <p class="text-sm text-orange-800 mt-1">Track user loan payments.</p>
+        </div>
+        <span class="text-3xl">💳</span>
+      </a>
+
+      <!-- User Complaints -->
+      <a href="user-complaints.html" class="flex items-center justify-between p-6 bg-orange-100 rounded-lg shadow hover:shadow-lg hover:bg-orange-200 transition">
+        <div>
+          <h2 class="text-xl font-semibold text-orange-700">📢 User Requests</h2>
+          <p class="text-sm text-orange-800 mt-1">Review complaints or issues from users.</p>
+        </div>
+        <span class="text-3xl">📬</span>
+      </a>
+
+      <!-- Settings -->
+      <a href="setting.html" class="flex items-center justify-between p-6 bg-orange-100 rounded-lg shadow hover:shadow-lg hover:bg-orange-200 transition">
+        <div>
+          <h2 class="text-xl font-semibold text-orange-700">⚙️ Settings</h2>
+          <p class="text-sm text-orange-800 mt-1">Update system preferences and rules.</p>
+        </div>
+        <span class="text-3xl">🛠️</span>
+      </a>
+
+      <!-- System Backup -->
+      <a href="backup.html" class="flex items-center justify-between p-6 bg-orange-100 rounded-lg shadow hover:shadow-lg hover:bg-orange-200 transition">
+        <div>
+          <h2 class="text-xl font-semibold text-orange-700">🗄️ System Backup</h2>
+          <p class="text-sm text-orange-800 mt-1">Create and download data backups.</p>
+        </div>
+        <span class="text-3xl">💾</span>
+      </a>
+
+    </div>
+
+    <!-- Logout Section -->
+    <div class="mt-10 text-center">
+      <a
+        href="../frontend/login.html"
+        class="inline-block bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg shadow"
+      >
+        🔓 Logout
+      </a>
+    </div>
+
+  </div>
+</body>
+</html>
